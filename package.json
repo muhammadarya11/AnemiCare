@@ -1,0 +1,26 @@
+{
+  "name": "capstone-project",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
+    "migrate": "npx prisma migrate dev --name development",
+    "db:sync": "npx prisma db push",
+    "lint": "npx eslint"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.6",
+    "@hono/swagger-ui": "^0.4.1",
+    "@prisma/client": "^5.22.0",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "hono": "^4.6.9",
+    "joi": "^17.13.3",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.15.0",
+    "globals": "^15.12.0",
+    "prisma": "^5.22.0"
+  }
+}
