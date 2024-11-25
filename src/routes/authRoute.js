@@ -1,5 +1,4 @@
 import { Hono } from 'hono';
-import { PrismaClient } from '@prisma/client';
 import 'dotenv/config';
 import Joi from 'joi';
 import ResponseCode from '../utils/responseCode.js';
@@ -10,7 +9,6 @@ import { generateToken } from '../utils/jwtUtils.js';
 import * as authService from '../services/authService.js';
 
 const app = new Hono();
-const prisma = new PrismaClient();
 
 app.post('/register', checkJson, async (c) => {
     try {
@@ -40,10 +38,10 @@ app.post('/register', checkJson, async (c) => {
 
     } catch (error) {
         // Gagal Validasi
-        const errors = error.details.map((err) => err.message);
+        // const errors = error.details.map((err) => err.message);
         return c.json({
             success: false,
-            errors
+            error
         }, ResponseCode.HTTP_BAD_REQUEST);
     }
 });
@@ -82,11 +80,11 @@ app.post('/login', checkJson, async (c) => {
         }, ResponseCode.HTTP_OK);
 
     } catch (error) {
-        const errors = error.details.map((err) => err.message);
+        // const errors = error.details.map((err) => err.message);
         return c.json({
             success: false,
             message: 'Validation Error',
-            errors
+            error
         }, ResponseCode.HTTP_BAD_REQUEST);
     }
 });

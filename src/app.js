@@ -6,6 +6,7 @@ import 'dotenv/config';
 // Router
 import indexRouter from './routes/indexRoute.js';
 import authRouter from './routes/authRoute.js';
+import predictRouter from './routes/predictRoute.js';
 
 const app = new Hono();
 const port = process.env.APP_PORT || 3000;
@@ -15,6 +16,7 @@ app.use(logger);
 
 app.route('/', indexRouter);
 app.route('/auth', authRouter);
+app.route('/anemia', predictRouter);
 
 // Handle Error
 app.notFound((c) => {
