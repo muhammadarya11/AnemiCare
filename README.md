@@ -2,7 +2,7 @@
 
 ## Anemia Prediction Based on Blood Lab Results
 
-![AnemiCare Logo](https://via.placeholder.com/800x200?text=AnemiCare) <!-- Tambahkan URL logo Anda jika ada -->
+![AnemiCare Logo](https://github.com/muhammadarya11/AnemiCare/blob/main/BACKGROUND.jpg) <!-- Tambahkan URL logo Anda jika ada -->
 
 ---
 
