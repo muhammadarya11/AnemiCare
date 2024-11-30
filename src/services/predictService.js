@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { spawnSync } from 'child_process';
-import path from 'path';
 
 export const predictAnemia = async (input) => {
 
@@ -14,4 +12,3 @@ export const predictAnemia = async (input) => {
         return null;
     }
 };
-
