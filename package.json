@@ -5,6 +5,7 @@
     "dev": "nodemon src/app.js",
     "start": "node src/app.js",
     "migrate": "npx prisma migrate dev --name development",
+    "migrate:refresh": "npx prisma migrate reset",
     "db:sync": "npx prisma db push",
     "lint": "npx eslint"
   },

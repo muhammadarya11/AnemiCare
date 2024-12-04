@@ -4,6 +4,7 @@ import jwtMiddleware from '../middleware/jwtMiddleware.js';
 import checkJson from '../middleware/checkJsonMiddleware.js';
 
 import * as predictService from '../services/predictService.js';
+import * as historyService from '../services/historyService.js';
 
 const app = new Hono();
 
@@ -33,12 +34,23 @@ app.post('/predict', jwtMiddleware, checkJson, async (c) => {
 
 app.post('/predict/save', jwtMiddleware, checkJson, async (c) => {
 
-    const data = await c.req.json();
+    const { profil_pasien, hasil_lab, diagnosis } = await c.req.json();
+
+    const { id } = c.get('user');
+
+    // Save Data Pasien
+    const patient = await predictService.savePatient(profil_pasien);
+
+    // Save Hasil Diagnosis
+    const diagnosisResult = await predictService.saveDiagnosis(id, patient.id, hasil_lab, diagnosis);
+
+    // Save Data Riwayat
+    historyService.saveHistory({ patientId: patient.id, dianosisId: diagnosisResult.id });
 
     return c.json({
         success: true,
         message: 'Prediction saved successfully.',
-        data: data
+        data: diagnosisResult
     }, ResponseCode.HTTP_OK);
 });
 
