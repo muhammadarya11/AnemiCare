@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 export const registerUser = async (name, username, password) => {
 
     // Check user already registered?
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             username: username
         }
@@ -18,7 +18,7 @@ export const registerUser = async (name, username, password) => {
 
     const hashPassword = Hash.make(password);
 
-    const newUser = await prisma.users.create({
+    const newUser = await prisma.user.create({
         data: {
             name: name,
             username: username,
@@ -34,7 +34,7 @@ export const registerUser = async (name, username, password) => {
 
 export const loginUser = async (username, password) => {
 
-    const user = await prisma.users.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             username: username
         }

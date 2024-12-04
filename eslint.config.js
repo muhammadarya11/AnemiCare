@@ -6,9 +6,9 @@ export default [
   {
     rules: {
       semi: ['error', 'always'],
-      'no-var': ['error'],
       quotes: ['error', 'single', { avoidEscape: true }]
-    }
+    },
+    ignores: ['.predict_service/', '.node_modules/']
   },
   { languageOptions: { globals: globals.node } },
 ];
