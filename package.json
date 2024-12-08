@@ -1,5 +1,9 @@
 {
-  "name": "capstone-project",
+  "name": "anemicare",
+  "author": {
+    "name": "Muhamamd Arya Kusuma",
+    "email": "muhammadaryakusuma4@gmail.com"
+  },
   "type": "module",
   "scripts": {
     "dev": "nodemon src/app.js",

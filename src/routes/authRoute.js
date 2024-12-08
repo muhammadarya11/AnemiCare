@@ -14,9 +14,23 @@ app.post('/register', checkJson, async (c) => {
     try {
 
         const schema = Joi.object({
-            name: Joi.string().max(100).required(),
-            username: Joi.string().min(5).max(50).required(),
-            password: Joi.string().min(8).max(16).required()
+            name: Joi.string().max(100).required().messages({
+                'string.empty': 'Nama tidak boleh kosong.',
+                'string.max': 'Nama tidak boleh lebih dari 100 karakter.',
+                'any.required': 'Nama wajib diisi.'
+            }),
+            username: Joi.string().min(5).max(50).required().messages({
+                'string.empty': 'Username tidak boleh kosong.',
+                'string.min': 'Username harus memiliki minimal 5 karakter.',
+                'string.max': 'Username tidak boleh lebih dari 50 karakter.',
+                'any.required': 'Username wajib diisi.'
+            }),
+            password: Joi.string().min(8).max(16).required().messages({
+                'string.empty': 'Password tidak boleh kosong.',
+                'string.min': 'Password harus memiliki minimal 8 karakter.',
+                'string.max': 'Password tidak boleh lebih dari 16 karakter.',
+                'any.required': 'Password wajib diisi.'
+            })
         });
 
         const { name, username, password } = await schema.validateAsync(await c.req.json(), {
@@ -25,23 +39,32 @@ app.post('/register', checkJson, async (c) => {
 
         // Register Service
         const user = await authService.registerUser(name, username, password);
+
         if (!user) {
             return c.json({
-                message: 'Username is already taken'
+                status: 'error',
+                message: 'Username sudah digunakan. Silakan pilih username lain.'
             }, ResponseCode.HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return c.json({
-            message: 'User registered successfully',
-            user: user
+            status: 'success',
+            message: 'Pengguna berhasil didaftarkan.',
+            data: {
+                user
+            }
         }, ResponseCode.HTTP_CREATED);
 
+
     } catch (error) {
-        // Gagal Validasi
-        // const errors = error.details.map((err) => err.message);
+        const formattedErrors = error.details.map(err => ({
+            field: err.context.key,
+            error: err.message
+        }));
         return c.json({
-            success: false,
-            error
+            status: 'error',
+            message: 'Invalid JSON Payload',
+            details: formattedErrors
         }, ResponseCode.HTTP_BAD_REQUEST);
     }
 });
@@ -49,8 +72,17 @@ app.post('/register', checkJson, async (c) => {
 app.post('/login', checkJson, async (c) => {
     try {
         const schema = Joi.object({
-            username: Joi.string().min(5).required(),
-            password: Joi.string().min(8).max(16).required()
+            username: Joi.string().min(5).required().messages({
+                'string.empty': 'Username tidak boleh kosong.',
+                'string.min': 'Username harus memiliki minimal 5 karakter.',
+                'any.required': 'Username wajib diisi.'
+            }),
+            password: Joi.string().min(8).max(16).required().messages({
+                'string.empty': 'Password tidak boleh kosong.',
+                'string.min': 'Password harus memiliki minimal 8 karakter.',
+                'string.max': 'Password tidak boleh lebih dari 16 karakter.',
+                'any.required': 'Password wajib diisi.'
+            })
         });
 
         const { username, password } = await schema.validateAsync(await c.req.json(), {
@@ -80,11 +112,14 @@ app.post('/login', checkJson, async (c) => {
         }, ResponseCode.HTTP_OK);
 
     } catch (error) {
-        // const errors = error.details.map((err) => err.message);
+        const formattedErrors = error.details.map(err => ({
+            field: err.context.key,
+            error: err.message
+        }));
         return c.json({
-            success: false,
-            message: 'Validation Error',
-            error
+            status: 'error',
+            message: 'Invalid JSON Payload',
+            details: formattedErrors
         }, ResponseCode.HTTP_BAD_REQUEST);
     }
 });

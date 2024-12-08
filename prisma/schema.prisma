@@ -18,13 +18,16 @@ enum Gender {
   PEREMPUAN
 }
 
-model user {
+model dokter {
   id        Int      @id @default(autoincrement())
   name      String   @db.VarChar(100)
   username  String   @unique @db.VarChar(50)
   password  String   @db.VarChar(100)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  hasilDiagnosis hasil_diagnosis[]
+  riwayat        riwayat[]
 }
 
 model pasien {
@@ -63,14 +66,17 @@ model hasil_diagnosis {
 
   Pasien  pasien    @relation(fields: [pasien_id], references: [id])
   Riwayat riwayat[]
+  dokter  dokter?   @relation(fields: [dokter_id], references: [id])
 }
 
 model riwayat {
   id           Int      @id @default(autoincrement())
   pasien_id    Int
+  dokter_id    Int
   diagnosis_id Int
   createdAt    DateTime @default(now())
 
   Pasien         pasien          @relation(fields: [pasien_id], references: [id])
   HasilDiagnosis hasil_diagnosis @relation(fields: [diagnosis_id], references: [id])
+  dokter         dokter?         @relation(fields: [dokter_id], references: [id])
 }
