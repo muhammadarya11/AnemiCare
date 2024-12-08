@@ -1,14 +1,13 @@
 import { Hono } from 'hono';
 import path from 'path';
+import fs from 'fs/promises';
 
 const app = new Hono();
 const docsDir = path.join(process.cwd(), 'docs');
 
-app.get('/', (c) => {
-    return c.json({
-        success: true,
-        message: 'App Running Successfully'
-    });
+app.get('/', async (c) => {
+    const html = await fs.readFile('../public/index.html', 'utf-8');
+    return c.html(html);
 });
 
 // app.get('/', swaggerUI({

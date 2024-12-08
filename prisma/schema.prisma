@@ -26,8 +26,8 @@ model dokter {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  hasilDiagnosis hasil_diagnosis[]
-  riwayat        riwayat[]
+  hasil_diagnosis hasil_diagnosis[]
+  riwayat         riwayat[]
 }
 
 model pasien {
@@ -39,8 +39,8 @@ model pasien {
   createdAt DateTime @default(now())
 
   // Relasi
-  hasilDiagnosis hasil_diagnosis[]
-  riwayat        riwayat[]
+  hasil_diagnosis hasil_diagnosis[]
+  riwayat         riwayat[]
 }
 
 model hasil_diagnosis {
@@ -64,9 +64,9 @@ model hasil_diagnosis {
   diagnosis String
   createdAt DateTime @default(now())
 
-  Pasien  pasien    @relation(fields: [pasien_id], references: [id])
-  Riwayat riwayat[]
-  dokter  dokter?   @relation(fields: [dokter_id], references: [id])
+  pasien  pasien    @relation(fields: [pasien_id], references: [id])
+  dokter  dokter    @relation(fields: [dokter_id], references: [id])
+  riwayat riwayat[]
 }
 
 model riwayat {
@@ -76,7 +76,7 @@ model riwayat {
   diagnosis_id Int
   createdAt    DateTime @default(now())
 
-  Pasien         pasien          @relation(fields: [pasien_id], references: [id])
-  HasilDiagnosis hasil_diagnosis @relation(fields: [diagnosis_id], references: [id])
-  dokter         dokter?         @relation(fields: [dokter_id], references: [id])
+  pasien          pasien          @relation(fields: [pasien_id], references: [id])
+  hasil_diagnosis hasil_diagnosis @relation(fields: [diagnosis_id], references: [id])
+  dokter          dokter          @relation(fields: [dokter_id], references: [id])
 }

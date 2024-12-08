@@ -12,6 +12,99 @@ export const saveHistory = async ({ doctorId, patientId, dianosisId }) => {
     });
 };
 
-export const getReport = async () => {
+export const getSummary = async (doctorId) => {
 
+    const data = await prisma.riwayat.findMany({
+        select: {
+            id: true,
+            pasien: {
+                select: {
+                    nama: true,
+                    usia: true,
+                    gender: true
+                }
+            },
+            hasil_diagnosis: {
+                select: {
+                    diagnosis: true
+                }
+            }
+        },
+        where: {
+            dokter_id: doctorId
+        }
+    });
+
+    if (!data) {
+        return null;
+    }
+
+    // Olah data
+    const totalPasients = data.length;
+    // Berdasarkan usia
+    const klasifikasiUsia = {
+        anak_anak: data.filter((item) => item.pasien.usia >= 0 && item.pasien.usia <= 12),
+        remaja: data.filter((item) => item.pasien.usia >= 13 && item.pasien.usia <= 18),
+        dewasa: data.filter((item) => item.pasien.usia >= 19 && item.pasien.usia <= 59),
+        lansia: data.filter((item) => item.pasien.usia >= 60),
+    };
+
+    const klasifikasiGender = {
+        laki_laki: data.filter((item) => item.pasien.gender === 'LAKI_LAKI'),
+        perempuan: data.filter((item) => item.pasien.gender === 'PEREMPUAN')
+    };
+    const riwayat = data.map((item) => {
+        return {
+            nama: item.pasien.nama,
+            usia: item.pasien.usia,
+            gender: item.pasien.gender,
+            diagnosis: item.hasil_diagnosis.diagnosis
+        };
+    });
+
+    // Hitung Persentase
+    const persentase = {
+        usia: {
+            anak_anak: ((klasifikasiUsia.anak_anak.length / totalPasients) * 100).toFixed(2),
+            remaja: ((klasifikasiUsia.remaja.length / totalPasients) * 100).toFixed(2),
+            dewasa: ((klasifikasiUsia.dewasa.length / totalPasients) * 100).toFixed(2),
+            lansia: ((klasifikasiUsia.lansia.length / totalPasients) * 100).toFixed(2),
+        },
+        gender: {
+            laki_laki: ((klasifikasiGender.laki_laki.length / totalPasients) * 100).toFixed(2),
+            perempuan: ((klasifikasiGender.perempuan.length / totalPasients) * 100).toFixed(2),
+        },
+        riwayat: riwayat
+    };
+
+    return { data, persentase };
+
+};
+
+export const getReport = async () => {
+    // Join Hasil diagnosis, Pasien dan Dokter
+    const data = await prisma.riwayat.findMany({
+        select: {
+            id: true,
+            dokter: {
+                select: {
+                    name: true
+                }
+            },
+            hasil_diagnosis: true,
+            pasien: {
+                select: {
+                    nama: true,
+                    gender: true,
+                    usia: true
+                }
+            }
+        }
+    });
+
+    if (!data) {
+        return null;
+    }
+
+    return data;
 };

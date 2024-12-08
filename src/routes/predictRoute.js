@@ -12,29 +12,6 @@ const app = new Hono();
 app.post('/predict', jwtMiddleware, checkJson, async (c) => {
     try {
         const schema = Joi.object({
-            profil_pasien: Joi.object({
-                nama: Joi.string().required().messages({
-                    'string.empty': 'Nama tidak boleh kosong.',
-                    'any.required': 'Nama wajib diisi.'
-                }),
-                usia: Joi.number().integer().min(1).required().messages({
-                    'number.base': 'Usia harus berupa angka.',
-                    'number.integer': 'Usia harus berupa bilangan bulat.',
-                    'number.min': 'Usia minimal adalah 1.',
-                    'any.required': 'Usia wajib diisi.'
-                }),
-                no_telp: Joi.string().required().messages({
-                    'string.empty': 'Nomor telepon tidak boleh kosong.',
-                    'any.required': 'Nomor telepon wajib diisi.'
-                }),
-                gender: Joi.string().valid('LAKI_LAKI', 'PEREMPUAN').required().messages({
-                    'any.only': "Gender harus berupa 'LAKI_LAKI' atau 'PEREMPUAN'.",
-                    'any.required': 'Gender wajib diisi.'
-                })
-            }).required().messages({
-                'object.base': 'Profil pasien harus berupa objek.',
-                'any.required': 'Profil pasien wajib diisi.'
-            }),
             hasil_lab: Joi.object({
                 WBC: Joi.number().required().messages({
                     'number.base': 'WBC harus berupa angka.',
