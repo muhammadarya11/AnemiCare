@@ -19,24 +19,24 @@ enum Gender {
 }
 
 model dokter {
-  id        Int      @id @default(autoincrement())
-  name      String   @db.VarChar(100)
-  username  String   @unique @db.VarChar(50)
-  password  String   @db.VarChar(100)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(100)
+  username   String   @unique @db.VarChar(50)
+  password   String   @db.VarChar(100)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   hasil_diagnosis hasil_diagnosis[]
   riwayat         riwayat[]
 }
 
 model pasien {
-  id        Int      @id @default(autoincrement())
-  nama      String   @db.VarChar(100)
-  usia      Int
-  no_telp   String   @db.VarChar(13)
-  gender    Gender
-  createdAt DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  nama       String   @db.VarChar(100)
+  usia       Int
+  no_telp    String   @db.VarChar(13)
+  gender     Gender
+  created_at DateTime @default(now())
 
   // Relasi
   hasil_diagnosis hasil_diagnosis[]
@@ -44,25 +44,25 @@ model pasien {
 }
 
 model hasil_diagnosis {
-  id        Int      @id @default(autoincrement())
-  dokter_id Int
-  pasien_id Int
-  wbc       Float // White Blood Cell
-  lymp      Float // Lymphocyte Percentage
-  neutp     Float // Neutrophil Percentage
-  lymn      Float // Lymphocyte Number
-  neutn     Float // Neutrophil Number
-  rbc       Float // Red Blood Cell
-  hgb       Float // Hemoglobin
-  hct       Float // Hematocrit
-  mcv       Float // Mean Corpuscular Volume
-  mch       Float // Mean Corpuscular Hemoglobin
-  mchc      Float // Mean Corpuscular Hemoglobin Concentration
-  plt       Float // Platelet
-  pdw       Float // Platelet Distribution Width
-  pct       Float // Plateletcrit
-  diagnosis String
-  createdAt DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  dokter_id  Int
+  pasien_id  Int
+  wbc        Float // White Blood Cell
+  lymp       Float // Lymphocyte Percentage
+  neutp      Float // Neutrophil Percentage
+  lymn       Float // Lymphocyte Number
+  neutn      Float // Neutrophil Number
+  rbc        Float // Red Blood Cell
+  hgb        Float // Hemoglobin
+  hct        Float // Hematocrit
+  mcv        Float // Mean Corpuscular Volume
+  mch        Float // Mean Corpuscular Hemoglobin
+  mchc       Float // Mean Corpuscular Hemoglobin Concentration
+  plt        Float // Platelet
+  pdw        Float // Platelet Distribution Width
+  pct        Float // Plateletcrit
+  diagnosis  String
+  created_at DateTime @default(now())
 
   pasien  pasien    @relation(fields: [pasien_id], references: [id])
   dokter  dokter    @relation(fields: [dokter_id], references: [id])
@@ -74,7 +74,7 @@ model riwayat {
   pasien_id    Int
   dokter_id    Int
   diagnosis_id Int
-  createdAt    DateTime @default(now())
+  created_at   DateTime @default(now())
 
   pasien          pasien          @relation(fields: [pasien_id], references: [id])
   hasil_diagnosis hasil_diagnosis @relation(fields: [diagnosis_id], references: [id])

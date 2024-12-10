@@ -35,7 +35,7 @@ class_names = [
 ]
 
 # Load model TensorFlow
-model = tf.keras.models.load_model('model.h5')
+model = tf.keras.models.load_model('model/model-v2.h5')
 
 # Fungsi prediksi
 def predict_anemia_from_features(features, model, class_name, scaler):

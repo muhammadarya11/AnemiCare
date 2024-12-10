@@ -10,7 +10,7 @@ export const predictAnemia = async (input) => {
             input: input
         });
 
-        return data.data;
+        return { confidence_score: data.data.confidenceScore, predicted_class: data.data.predictedClass };
     } catch (error) {
         return null;
     }

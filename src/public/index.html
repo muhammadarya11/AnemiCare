@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon" />
+    <title>AnemiCare Registration</title>
+    <!-- ini ngambil icon dari luar -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* sengaja rek di gabung biar clean */
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f5f5f5;
+        font-family: "Roboto", Arial, sans-serif;
+      }
+
+      .register-card {
+        background-color: #fff;
+        padding: 2.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        text-align: center;
+      }
+
+      .register-card img.logo {
+        width: 80px;
+        margin-bottom: 1rem;
+      }
+
+      .register-card h2 {
+        color: #333;
+        margin-bottom: 2rem;
+        font-weight: 600;
+      }
+
+      .register-card .input-group {
+        position: relative;
+        margin-bottom: 1.5rem;
+      }
+
+      .register-card .input-group i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #e63946;
+        font-size: 1rem;
+      }
+
+      .register-card .input-group input {
+        width: 100%;
+        box-sizing: border-box; /* ini biar apa teh, menyesuaikan */
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-family: "Roboto", Arial, sans-serif;
+      }
+
+      .register-card .input-group input:focus {
+        outline: none;
+        border-color: #e63946; /* Warna merah saat input aktif */
+        box-shadow: 0 0 4px rgba(230, 57, 70, 0.5);
+      }
+
+      .register-card button {
+        width: 100%;
+        background-color: #e63946;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .register-card button:hover {
+        background-color: #d62839;
+      }
+
+      .register-card p {
+        color: #666;
+        margin-top: 1rem;
+        font-size: 0.875rem;
+      }
+
+      .register-card a {
+        color: #e63946;
+        text-decoration: none;
+      }
+
+      .register-card a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="register-card">
+      <!-- nanti taruh logo di sini -->
+      <img src="/static/logo.png" alt="AnemiCare Logo" class="logo" />
+      <h2>AnemiCare</h2>
+      <form id="registerForm">
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="Nama" id="fullname" required />
+        </div>
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="Username" id="username" required />
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input
+            type="password"
+            placeholder="Password"
+            id="password"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input
+            type="password"
+            placeholder="Konfirmasi Password"
+            id="confirmPassword"
+            required
+          />
+        </div>
+        <button type="submit">Register</button>
+      </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const registerForm = document.getElementById("registerForm");
+
+      registerForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const fullname = document.getElementById("fullname").value;
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        // Validasi password dan confirm password
+        if (password !== confirmPassword) {
+          Swal.fire({
+            title: "Password Tidak Cocok",
+            text: "Password dan konfirmasi password Anda tidak cocok. Silakan coba lagi.",
+            icon: "error",
+          });
+          return;
+        }
+
+        // Membuat data untuk dikirim ke server
+        const data = {
+          name: fullname,
+          username: username,
+          password: password,
+        };
+
+        // Mengirim data dengan POST request menggunakan axios
+        axios
+          .post("/auth/register", data, {
+            headers: {
+              "Content-Type": "application/json", // Mengirim data sebagai JSON
+            },
+          })
+          .then((response) => {
+            // Menangani response sukses dari server
+            Swal.fire({
+              title: "Pendaftaran Berhasil",
+              text: "Selamat datang, " + fullname + "!",
+              icon: "success",
+            });
+            registerForm.reset();
+          })
+          .catch((error) => {
+            // Menangani error jika terjadi
+            if (error.response) {
+              // Menangani status code 422: Username sudah terdaftar
+              if (error.response.status === 422) {
+                Swal.fire({
+                  title: "Username Sudah Terdaftar",
+                  text: "Username yang Anda masukkan sudah terdaftar. Silakan gunakan username lain.",
+                  icon: "error",
+                });
+              }
+              // Menangani status code 400: Validasi gagal
+              else if (error.response.status === 400) {
+                // Menampilkan pesan error dari response JSON
+                const errorDetails = error.response.data.details;
+                let errorMessages = "";
+                errorDetails.forEach((errorDetail) => {
+                  errorMessages += `${errorDetail.error}\n`;
+                });
+
+                Swal.fire({
+                  title: "Validasi Gagal",
+                  text: errorMessages,
+                  icon: "error",
+                });
+              }
+            } else {
+              Swal.fire({
+                title: "Pendaftaran Gagal",
+                text: "Terjadi kesalahan. Silakan coba lagi.",
+                icon: "error",
+              });
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

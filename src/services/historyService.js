@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import formatDate from '../utils/formatDate.js';
 
 const prisma = new PrismaClient();
 
@@ -40,7 +41,7 @@ export const getSummary = async (doctorId) => {
     }
 
     // Olah data
-    const totalPasients = data.length;
+    const totalPasien = data.length;
     // Berdasarkan usia
     const klasifikasiUsia = {
         anak_anak: data.filter((item) => item.pasien.usia >= 0 && item.pasien.usia <= 12),
@@ -65,14 +66,14 @@ export const getSummary = async (doctorId) => {
     // Hitung Persentase
     const persentase = {
         usia: {
-            anak_anak: ((klasifikasiUsia.anak_anak.length / totalPasients) * 100).toFixed(2),
-            remaja: ((klasifikasiUsia.remaja.length / totalPasients) * 100).toFixed(2),
-            dewasa: ((klasifikasiUsia.dewasa.length / totalPasients) * 100).toFixed(2),
-            lansia: ((klasifikasiUsia.lansia.length / totalPasients) * 100).toFixed(2),
+            anak_anak: ((klasifikasiUsia.anak_anak.length / totalPasien) * 100).toFixed(2),
+            remaja: ((klasifikasiUsia.remaja.length / totalPasien) * 100).toFixed(2),
+            dewasa: ((klasifikasiUsia.dewasa.length / totalPasien) * 100).toFixed(2),
+            lansia: ((klasifikasiUsia.lansia.length / totalPasien) * 100).toFixed(2),
         },
         gender: {
-            laki_laki: ((klasifikasiGender.laki_laki.length / totalPasients) * 100).toFixed(2),
-            perempuan: ((klasifikasiGender.perempuan.length / totalPasients) * 100).toFixed(2),
+            laki_laki: ((klasifikasiGender.laki_laki.length / totalPasien) * 100).toFixed(2),
+            perempuan: ((klasifikasiGender.perempuan.length / totalPasien) * 100).toFixed(2),
         },
         riwayat: riwayat
     };
@@ -81,29 +82,60 @@ export const getSummary = async (doctorId) => {
 
 };
 
-export const getReport = async () => {
-    // Join Hasil diagnosis, Pasien dan Dokter
-    const data = await prisma.riwayat.findMany({
-        select: {
-            id: true,
-            dokter: {
-                select: {
-                    name: true
-                }
+export const getReport = async (from, to) => {
+
+    let data = [];
+
+    if (from && to) {
+        // Format Date
+        const fromDate = formatDate(from);
+        const toDate = formatDate(to);
+        data = await prisma.riwayat.findMany({
+            select: {
+                id: true,
+                dokter: {
+                    select: {
+                        name: true
+                    }
+                },
+                hasil_diagnosis: true,
+                pasien: {
+                    select: {
+                        nama: true,
+                        gender: true,
+                        usia: true
+                    }
+                },
+                created_at: true
             },
-            hasil_diagnosis: true,
-            pasien: {
-                select: {
-                    nama: true,
-                    gender: true,
-                    usia: true
+            where: {
+                created_at: {
+                    gte: fromDate,
+                    lte: toDate
                 }
             }
-        }
-    });
-
-    if (!data) {
-        return null;
+        });
+    } else {
+        // Join Hasil diagnosis, Pasien dan Dokter
+        data = await prisma.riwayat.findMany({
+            select: {
+                id: true,
+                dokter: {
+                    select: {
+                        name: true
+                    }
+                },
+                hasil_diagnosis: true,
+                pasien: {
+                    select: {
+                        nama: true,
+                        gender: true,
+                        usia: true
+                    }
+                },
+                created_at: true
+            }
+        });
     }
 
     return data;

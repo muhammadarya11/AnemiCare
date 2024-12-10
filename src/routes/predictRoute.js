@@ -1,11 +1,11 @@
 import { Hono } from 'hono';
+import Joi from 'joi';
 import ResponseCode from '../utils/responseCode.js';
 import jwtMiddleware from '../middleware/jwtMiddleware.js';
 import checkJson from '../middleware/checkJsonMiddleware.js';
 
 import * as predictService from '../services/predictService.js';
 import * as historyService from '../services/historyService.js';
-import Joi from 'joi';
 
 const app = new Hono();
 
@@ -96,7 +96,7 @@ app.post('/predict', jwtMiddleware, checkJson, async (c) => {
 
         return c.json({
             success: true,
-            message: 'Prediction completed successfully.',
+            message: 'Prediksi berhasil',
             data: result
         }, ResponseCode.HTTP_OK);
     } catch (error) {

@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
-import ResponseCode from '../utils/responseCode.js';
 import jwtMiddleware from '../middleware/jwtMiddleware.js';
+import formatDate from '../utils/formatDate.js';
 
 import * as historyService from '../services/historyService.js';
 
@@ -8,10 +8,12 @@ const app = new Hono();
 
 app.get('/', async (c) => {
 
-    const data = await historyService.getReport();
+    const from = c.req.query('from');
+    const to = c.req.query('to');
+    const data = await historyService.getReport(from, to);
 
     return c.json({
-        data: data
+        data
     });
 });
 
