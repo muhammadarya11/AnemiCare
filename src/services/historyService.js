@@ -75,10 +75,12 @@ export const getSummary = async (doctorId) => {
             laki_laki: ((klasifikasiGender.laki_laki.length / totalPasien) * 100).toFixed(2),
             perempuan: ((klasifikasiGender.perempuan.length / totalPasien) * 100).toFixed(2),
         },
-        riwayat: riwayat
     };
 
-    return { data, persentase };
+    return {
+        persentase,
+        riwayat
+    };
 
 };
 

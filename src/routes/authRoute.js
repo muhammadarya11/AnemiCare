@@ -43,7 +43,8 @@ app.post('/register', checkJson, async (c) => {
         if (!user) {
             return c.json({
                 status: 'error',
-                message: 'Username sudah digunakan. Silakan pilih username lain.'
+                message: 'Username sudah digunakan. Silakan pilih username lain.',
+                status_code: ResponseCode.HTTP_UNPROCESSABLE_ENTITY
             }, ResponseCode.HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -52,7 +53,8 @@ app.post('/register', checkJson, async (c) => {
             message: 'Pengguna berhasil didaftarkan.',
             data: {
                 user
-            }
+            },
+            status_code: ResponseCode.HTTP_CREATED
         }, ResponseCode.HTTP_CREATED);
 
 
@@ -63,8 +65,9 @@ app.post('/register', checkJson, async (c) => {
         }));
         return c.json({
             status: 'error',
-            message: 'Invalid JSON Payload',
-            details: formattedErrors
+            message: 'Payload JSON tidak valid.',
+            details: formattedErrors,
+            status_code: ResponseCode.HTTP_BAD_REQUEST
         }, ResponseCode.HTTP_BAD_REQUEST);
     }
 });
@@ -94,8 +97,9 @@ app.post('/login', checkJson, async (c) => {
 
         if (!user) {
             return c.json({
-                success: false,
-                message: 'Invalid Username or Password'
+                status: 'error',
+                message: 'Username atau Password salah.',
+                status_code: ResponseCode.HTTP_BAD_REQUEST
             }, ResponseCode.HTTP_BAD_REQUEST);
         }
 
@@ -106,9 +110,10 @@ app.post('/login', checkJson, async (c) => {
         });
 
         return c.json({
-            success: true,
-            message: 'Login successful',
-            token: token
+            status: 'success',
+            message: 'Berhasil login.',
+            token: token,
+            status_code: ResponseCode.HTTP_OK
         }, ResponseCode.HTTP_OK);
 
     } catch (error) {
@@ -118,15 +123,21 @@ app.post('/login', checkJson, async (c) => {
         }));
         return c.json({
             status: 'error',
-            message: 'Invalid JSON Payload',
-            details: formattedErrors
+            message: 'Payload JSON tidak valid.',
+            details: formattedErrors,
+            status_code: ResponseCode.HTTP_BAD_REQUEST
         }, ResponseCode.HTTP_BAD_REQUEST);
     }
 });
 
 app.get('/profile', jwtMiddleware, async (c) => {
     const user = c.get('user');
-    return c.json(user);
+    return c.json({
+        status: 'success',
+        message: 'Berhasil mengambil data profil.',
+        data: user,
+        status_code: ResponseCode.HTTP_OK
+    });
 });
 
 export default app;

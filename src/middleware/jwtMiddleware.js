@@ -1,12 +1,15 @@
 import { verifyToken } from '../utils/jwtUtils.js';
+import ResponseCode from '../utils/responseCode.js';
 
 const jwtMiddleware = async (c, next) => {
 
     const authHeader = c.req.header('Authorization');
     if (!authHeader) {
         return c.json({
-            'message': 'Unauthorized - Invalid or missing token'
-        }, 401);
+            status: 'error',
+            message: 'Unauthorized - Token tidak valid atau tidak ada.',
+            status_code: ResponseCode.HTTP_UNAUTHORIZED
+        }, ResponseCode.HTTP_UNAUTHORIZED);
     }
 
     const token = authHeader.split(' ')[1];
@@ -17,8 +20,10 @@ const jwtMiddleware = async (c, next) => {
         await next();
     } catch (error) {
         return c.json({
-            'message': 'Unauthorized - Invalid or missing token'
-        }, 401);
+            status: 'error',
+            message: 'Unauthorized - Token tidak valid atau tidak ada.',
+            status_code: ResponseCode.HTTP_UNAUTHORIZED
+        }, ResponseCode.HTTP_UNAUTHORIZED);
     }
 };
 

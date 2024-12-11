@@ -3,6 +3,7 @@ import jwtMiddleware from '../middleware/jwtMiddleware.js';
 import formatDate from '../utils/formatDate.js';
 
 import * as historyService from '../services/historyService.js';
+import ResponseCode from '../utils/responseCode.js';
 
 const app = new Hono();
 
@@ -13,8 +14,11 @@ app.get('/', async (c) => {
     const data = await historyService.getReport(from, to);
 
     return c.json({
-        data
-    });
+        status: 'success',
+        message: 'Berhasil mengambil data.',
+        data,
+        status_code: ResponseCode.HTTP_OK
+    }, ResponseCode.HTTP_OK);
 });
 
 app.get('/summary', jwtMiddleware, async (c) => {
@@ -25,8 +29,11 @@ app.get('/summary', jwtMiddleware, async (c) => {
     const data = await historyService.getSummary(id);
 
     return c.json({
-        data: data.persentase
-    });
+        status: 'success',
+        message: 'Berhasil mengambil data.',
+        data: data,
+        status_code: ResponseCode.HTTP_OK
+    }, ResponseCode.HTTP_OK);
 
 });
 

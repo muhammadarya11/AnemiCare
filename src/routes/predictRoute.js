@@ -95,9 +95,10 @@ app.post('/predict', jwtMiddleware, checkJson, async (c) => {
         }
 
         return c.json({
-            success: true,
-            message: 'Prediksi berhasil',
-            data: result
+            status: 'success',
+            message: 'Prediksi berhasil.',
+            data: result,
+            status_code: ResponseCode.HTTP_OK
         }, ResponseCode.HTTP_OK);
     } catch (error) {
         const formattedErrors = error.details.map(err => ({
@@ -106,8 +107,9 @@ app.post('/predict', jwtMiddleware, checkJson, async (c) => {
         }));
         return c.json({
             status: 'error',
-            message: 'Invalid JSON Payload',
-            details: formattedErrors
+            message: 'Payload JSON tidak valid.',
+            details: formattedErrors,
+            status_code: ResponseCode.HTTP_BAD_REQUEST
         }, ResponseCode.HTTP_BAD_REQUEST);
     }
 });
@@ -221,10 +223,11 @@ app.post('/predict/save', jwtMiddleware, checkJson, async (c) => {
         historyService.saveHistory({ doctorId: id, patientId: patient.id, dianosisId: diagnosisResult.id });
 
         return c.json({
-            success: true,
-            message: 'Prediction saved successfully.',
-            data: diagnosisResult
-        }, ResponseCode.HTTP_OK);
+            status: 'success',
+            message: 'Data prediksi berhasil disimpan.',
+            data: diagnosisResult,
+            status_code: ResponseCode.HTTP_CREATED
+        }, ResponseCode.HTTP_CREATED);
     } catch (error) {
         const formattedErrors = error.details.map(err => ({
             field: err.context.key,
@@ -232,8 +235,9 @@ app.post('/predict/save', jwtMiddleware, checkJson, async (c) => {
         }));
         return c.json({
             status: 'error',
-            message: 'Invalid JSON Payload',
-            details: formattedErrors
+            message: 'Payload JSON tidak valid.',
+            details: formattedErrors,
+            status_code: ResponseCode.HTTP_BAD_REQUEST
         }, ResponseCode.HTTP_BAD_REQUEST);
     }
 
