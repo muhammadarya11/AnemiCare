@@ -187,7 +187,7 @@ Content-Type: application/json
 **Endpoint**
 
 ```
-POST /auth/profile
+GET /auth/profile
 ```
 
 **Deskripsi:**
@@ -398,7 +398,7 @@ Content-Type: application/json
 **Endpoint:**
 
 ```
-POST /report/summary
+GET /report/summary
 ```
 
 **Deskripsi:**
@@ -463,7 +463,7 @@ Authorization: Bearer <TOKEN_JWT_KAMU>
 **Endpoint:**
 
 ```
-POST /report/history?from=date&to=date
+GET /report/history?from=date&to=date
 ```
 
 **Deskripsi:**
