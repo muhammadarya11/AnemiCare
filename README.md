@@ -17,6 +17,11 @@ API ini menggunakan autentikasi berbasis token. Anda perlu menyertakan token API
 ```http
 Authorization: Bearer <TOKEN_JWT_KAMU>
 ```
+Di sini, <TOKEN_JWT_KAMU> adalah token yang Anda terima setelah login berhasil.
+
+Token ini digunakan untuk mengakses berbagai endpoint API yang memerlukan autentikasi, seperti:
+Mendapatkan profil pengguna (GET /auth/profile), Melakukan prediksi anemia (POST /anemia/predict), Menyimpan hasil prediksi anemia (POST /anemia/predict/save).
+Tanpa token yang valid, Anda tidak akan bisa mengakses endpoint-endpoint ini dan akan mendapatkan error 401 Unauthorized.
 
 ---
 
