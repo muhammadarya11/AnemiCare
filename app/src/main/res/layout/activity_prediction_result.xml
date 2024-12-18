@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PredictionResult">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Label Output"
+        android:textSize="30dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tvPredictedClass">
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Label Output"
+        android:textSize="30dp"
+        android:layout_below="@+id/tvPredictedClass"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/tvConfidenceScore">
+    </TextView>
+
+    <ImageButton
+        android:id="@+id/btn_1"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/tvConfidenceScore"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:backgroundTint="@color/primaryColor"
+        android:background="@drawable/button_shape"
+        android:src="@drawable/homee"
+        >
+
+    </ImageButton>
+
+    <ImageButton
+        android:id="@+id/btn_2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@id/btn_1"
+        android:layout_toStartOf="@id/btn_1"
+        android:backgroundTint="@color/grey"
+        android:background="@drawable/button_shape"
+        android:src="@drawable/baseline_arrow_back_24"
+        >
+
+    </ImageButton>
+</RelativeLayout>

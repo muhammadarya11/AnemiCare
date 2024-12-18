@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Home">
+
+
+
+    <LinearLayout
+        android:id="@+id/ly1"
+        android:layout_width="match_parent"
+        android:layout_height="351dp"
+        android:layout_marginTop="110dp"
+        android:orientation="vertical"
+        android:padding="40dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Rentang Usia"
+            android:textSize="15dp">
+        </TextView>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/pie"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp">
+        </ImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jenis Kelamin"
+            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true">
+        </TextView>
+        <ImageView
+            android:id="@+id/imagelogin"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@drawable/pie"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp">
+        </ImageView>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Riwayat Prediksi Pasien"
+        android:textSize="15dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/riwayatPrediksi"
+        android:layout_below="@id/ly1">
+    </TextView>
+
+    <TableLayout
+        android:layout_width="336dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/riwayatPrediksi"
+        android:id="@+id/tableRiwayatPrediksi"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:layout_centerHorizontal="true">
+
+        <TableRow
+            android:background="@color/primaryColor">
+
+            <TextView
+                android:text="Nama"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="Usia"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="Kelamin"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="Deteksi"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+        </TableRow>
+        <TableRow
+            android:background="@color/white"
+            android:padding="5dp">
+
+            <TextView
+                android:text="Agus"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="35"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="Laki-laki"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="Macrotic Anemia"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+        </TableRow>
+
+        <TableRow
+            android:background="@color/white"
+            android:padding="5dp">
+
+            <TextView
+                android:text="Andika"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="17"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="Laki-laki"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="Healthy"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+        </TableRow>
+        <TableRow
+            android:background="@color/white"
+            android:padding="5dp">
+
+            <TextView
+                android:text="Riana"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="24"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="Perempuan"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+            <TextView
+                android:text="Healthy"
+                android:layout_weight="1"
+                android:gravity="center"
+                />
+        </TableRow>
+
+
+    </TableLayout>
+
+
+    <ImageButton
+        android:id="@+id/button"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+
+        android:layout_below="@id/tableRiwayatPrediksi"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/primaryColor"
+        android:background="@drawable/button_shape"
+        android:src="@drawable/scan"
+        >
+
+    </ImageButton>
+</RelativeLayout>
